@@ -1,42 +1,55 @@
-import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   signInStart,
   signInSuccess,
   signInFailure,
-} from '../redux/user/userSlice';
-import OAuth from '../components/OAuth';
+} from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // handle form input change(changes in the input field while signing in)
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
+
+  // handle form submission , send the form data to the server and sign in the user and navigate to the home page
   const handleSubmit = async (e) => {
+    // prevent from refreshing the page
     e.preventDefault();
+
+    // check if all fields are filled:
     if (!formData.email || !formData.password) {
-      return dispatch(signInFailure('Please fill all the fields'));
+      return dispatch(signInFailure("Please fill all the fields"));
     }
     try {
       dispatch(signInStart());
-      const res = await fetch('/api/auth/signin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      // send the form data to the signin endpoint and get the response from the server:
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
+      // store the response from the server in the data variable as json
       const data = await res.json();
+
+      // if the success field in the response is false, dispatch the signInFailure action with the message from the server
       if (data.success === false) {
         dispatch(signInFailure(data.message));
       }
 
+      // if the response is ok, dispatch the signInSuccess action with the data from the server and navigate to the home page
       if (res.ok) {
         dispatch(signInSuccess(data));
-        navigate('/');
+        navigate("/");
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
@@ -91,7 +104,7 @@ export default function SignIn() {
                   <span className='pl-3'>Loading...</span>
                 </>
               ) : (
-                'Sign In'
+                "Sign In"
               )}
             </Button>
             <OAuth />

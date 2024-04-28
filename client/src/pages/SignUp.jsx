@@ -32,7 +32,7 @@ export default function SignUp() {
       setLoading(true);
       setErrorMessage(null);
 
-      // send the form data to the signup endpoint:
+      // send the form data to the signup endpoint and get the response from the server:
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

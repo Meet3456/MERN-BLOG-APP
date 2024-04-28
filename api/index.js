@@ -1,4 +1,6 @@
 import express from 'express';
+import cors from "cors";
+
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
@@ -26,6 +28,7 @@ const app = express();
 
 // add middleware to parse incoming request with JSON payloads
 app.use(express.json());
+app.use(cors());
 app.use(cookieParser());
 
 app.listen(3000, () => {

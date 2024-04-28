@@ -10,8 +10,11 @@ import DashboardComp from "../components/DashboardComp";
 export default function Dashboard() {
   const location = useLocation();
   const [tab, setTab] = useState("");
+  // get the tab from the url and set the tab state.any time the location changes, the useEffect hook will run.
   useEffect(() => {
+    // get the tab from the url
     const urlParams = new URLSearchParams(location.search);
+    // 
     const tabFromUrl = urlParams.get("tab");
     if (tabFromUrl) {
       setTab(tabFromUrl);

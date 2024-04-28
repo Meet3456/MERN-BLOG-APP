@@ -29,4 +29,6 @@ export const store = configureStore({
     getDefaultMiddleware({ serializableCheck: false }),
 });
 
+
+// persistStore is used to create a persistor object that can be used to persist the Redux store. It takes the store as an argument.
 export const persistor = persistStore(store);

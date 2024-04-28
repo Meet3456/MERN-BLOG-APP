@@ -21,8 +21,10 @@ mongoose
 
 const __dirname = path.resolve();
 
+// ceate an express app
 const app = express();
 
+// add middleware to parse incoming request with JSON payloads
 app.use(express.json());
 app.use(cookieParser());
 
@@ -30,6 +32,8 @@ app.listen(3000, () => {
   console.log('Server is running on port 3000!');
 });
 
+
+// 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);

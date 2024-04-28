@@ -6,11 +6,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      tolowercase: true
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      tolowercase: true
     },
     password: {
       type: String,
@@ -29,6 +31,8 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// in mongoose.model('User', userSchema), 'User' is the name of the model and userSchema is the schema that we want to use for this model.In mongodb it is stored as 'users' collection.
 const User = mongoose.model('User', userSchema);
 
+// export the User model
 export default User;

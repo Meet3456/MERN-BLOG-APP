@@ -15,6 +15,7 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showSearchBar, setShowSearchBar] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -60,30 +61,46 @@ export default function Header() {
         Blog
       </Link>
 
-      <form onSubmit={handleSubmit}>
-        <TextInput
-          type='text'
-          placeholder='Search...'
-          rightIcon={AiOutlineSearch}
-          className='hidden lg:inline'
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </form>
-
-      <Button className='w-12 h-10 lg:hidden' color='gray' pill>
-        <AiOutlineSearch />
-      </Button>
+      {showSearchBar ? (
+        <form onSubmit={handleSubmit} className='flex items-center'>
+          <TextInput
+            type='text'
+            placeholder='Search...'
+            rightIcon={AiOutlineSearch}
+            className='lg:inline mr-2'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Button
+            className='w-12 h-10'
+            color='gray'
+            pill
+            onClick={() => setShowSearchBar(false)}
+          >
+            <AiOutlineSearch />
+          </Button>
+        </form>
+      ) : (
+        <Button
+          className='w-12 h-10 lg:hidden'
+          color='gray'
+          pill
+          onClick={() => setShowSearchBar(true)}
+        >
+          <AiOutlineSearch />
+        </Button>
+      )}
 
       <div className='flex gap-2 md:order-2'>
         <Button
-          className='w-12 h-10 hidden sm:inline'
+          className='w-12 h-10 sm:inline-block hidden lg:inline'
           color='gray'
           pill
           onClick={() => dispatch(toggleTheme())}
         >
           {theme === "light" ? <FaSun /> : <FaMoon />}
         </Button>
+
         {currentUser ? (
           <Dropdown
             arrowIcon={false}
